@@ -1,0 +1,14 @@
+{
+  "manifest_version": 2,
+  "name": "Clickbait Marker",
+  "version": "0.1",
+  
+  "description": "Marks / flags clickbait links.",
+
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"], 
+      "js": ["rules/english.js", "clickbait-marker.js"]
+    }
+  ]
+}
