@@ -5,19 +5,30 @@ for (var i = 0; i < rules.length; i++) {
 
 function mark(node) {
     for (let link of node.querySelectorAll("a")) {
-        console.log(link.text);
         for (var i = 0; i < rules.length; i++) {
             applyRule(link, rules[i]);
         }
     }
 
     function applyRule(link, pattern) {
-        if (pattern.test(link.text)) {
-            //link.style.backgroundColor = "white";
-            //link.style.color = "gray";            
-            link.innerHTML = "Clickbait detected: <strike>" + link.innerHTML + "</strike>";
-            //link.parentNode.insertBefore(node,link); 
-        }
+        // console.log(link.text);
+        for (var i = 0; i < link.childNodes.length; i++) {
+            var curNode = link.childNodes[i];
+            if (curNode.nodeName === "#text") {
+                let text = curNode.nodeValue;
+                if (pattern.test(text)) {
+                    //console.log(text);
+                    //link.style.backgroundColor = "white";
+                    //link.style.color = "gray";            
+                    curNode.nodeValue = "Clickbait detected: ";
+                    var node = document.createElement("S");
+                    node.innerHTML = text;
+                    link.insertBefore(node, link.childNodes[i+1]); 
+                    i=i+1;
+                }
+            }
+            else applyRule(curNode, pattern);
+        };
     }
 }
 
